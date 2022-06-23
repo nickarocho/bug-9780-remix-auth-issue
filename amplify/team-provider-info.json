@@ -1,0 +1,19 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-bug9780remixauthissu-dev-132952-authRole",
+      "UnauthRoleArn": "arn:aws:iam::947511734122:role/amplify-bug9780remixauthissu-dev-132952-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::947511734122:role/amplify-bug9780remixauthissu-dev-132952-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-bug9780remixauthissu-dev-132952-deployment",
+      "UnauthRoleName": "amplify-bug9780remixauthissu-dev-132952-unauthRole",
+      "StackName": "amplify-bug9780remixauthissu-dev-132952",
+      "StackId": "arn:aws:cloudformation:us-west-2:947511734122:stack/amplify-bug9780remixauthissu-dev-132952/3dc5d620-f333-11ec-812c-0ae4082303a7"
+    },
+    "categories": {
+      "auth": {
+        "bug9780remixauthissuc6cb894f": {}
+      }
+    }
+  }
+}

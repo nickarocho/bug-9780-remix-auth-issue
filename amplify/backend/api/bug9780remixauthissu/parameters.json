@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "bug9780remixauthissu",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authbug9780remixauthissuc6cb894f",
+      "Outputs.UserPoolId"
+    ]
+  }
+}
