@@ -14,3 +14,32 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.row {
+  max-width: 100% !important;
+  flex-direction: row;
+}
+
+input {
+  height: 2rem;
+  margin: 0 0.5rem;
+  border-width: 0 0 1px 0;
+  padding: 0.5rem 0;
+  transition: all 0.2s;
+}
+
+input:focus-visible {
+  outline: none;
+  border-bottom-color: dodgerblue;
+  border-bottom-width: 2px;
+}
+
+.formAction {
+  margin: 0 1rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.formAction:hover {
+  border-bottom: 1px solid dodgerblue;
+}

@@ -1,8 +1,100 @@
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
 
+import { useEffect, useState } from "react";
+import { Auth, API } from "aws-amplify";
+
 export default function Home() {
+  const [user, setUser] = useState(null);
+  const [tempUser, setTempUser] = useState(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [code, setCode] = useState("");
+
+  const fetchUser = async () => {
+    try {
+      const fetchUserResult = await Auth.currentAuthenticatedUser();
+      setUser(fetchUserResult);
+      console.log({ fetchUserResult, user });
+    } catch (err) {
+      setUser(null);
+      console.error("fetchUser error: ", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      alert("missing email or password!");
+      return null;
+    }
+
+    try {
+      const result = await Auth.signIn(email, password);
+      console.log("sign in result", result);
+
+      setUser(result);
+    } catch (err) {
+      console.error("sign in error:", err);
+    }
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      alert("missing email or password!");
+      return null;
+    }
+
+    try {
+      const result = await Auth.signUp(email, password);
+      console.log("sign up result", result);
+
+      const { user, userConfirmed } = result;
+
+      setTempUser({ ...user, userConfirmed });
+    } catch (err) {
+      console.error("sign up error:", err);
+    }
+  };
+
+  const handleConfirmSignUp = async (e) => {
+    e.preventDefault();
+
+    if (!code) {
+      alert("missing code!");
+      return null;
+    }
+
+    try {
+      const result = await Auth.confirmSignUp(email, code);
+      console.log("confirm user result", result);
+
+      setTempUser({
+        ...tempUser,
+        userConfirmed: result === "SUCCESS" ? true : false,
+      });
+    } catch (err) {
+      console.error("confirm sign up error:", err);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      const result = await Auth.signOut();
+      console.log("sign out result", result);
+      fetchUser();
+    } catch (err) {
+      console.error("sign out error:", err);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -14,34 +106,99 @@ export default function Home() {
       <main className={styles.main}>
         <h1 className={styles.title}>App title</h1>
 
-        <p className={styles.description}>Page description here...</p>
+        <p className={styles.description}>
+          {user ? (
+            <>
+              <p>Welcome, {user.username}!</p>
+              <a onClick={handleSignOut}>Log out &rarr;</a>
+            </>
+          ) : (
+            <p>Log in or sign up below.</p>
+          )}
+        </p>
 
         <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Sign Up &rarr;</h2>
-            <p>Something else here...</p>
-          </a>
+          {!user && !tempUser ? (
+            <>
+              <div className={`${styles.card} row`}>
+                <input
+                  onChange={(e) => setEmail(e.target.value)}
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                />
+                <input
+                  onChange={(e) => setPassword(e.target.value)}
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                />
+                <a onClick={(e) => handleSignIn(e)} className="formAction">
+                  Sign In &rarr;
+                </a>
+                <a onClick={(e) => handleSignUp(e)} className="formAction">
+                  Sign Up &rarr;
+                </a>
+              </div>
+            </>
+          ) : !user && tempUser && !tempUser.userConfirmed ? (
+            <>
+              <div className={`${styles.card} row`}>
+                <input
+                  defaultValue=""
+                  onChange={(e) => setCode(e.target.value)}
+                  name="code"
+                  type="code"
+                  placeholder="Code..."
+                />
+                <a
+                  onClick={(e) => handleConfirmSignUp(e)}
+                  className="formAction"
+                >
+                  Confirm &rarr;
+                </a>
+              </div>
+            </>
+          ) : !user && tempUser && tempUser.userConfirmed ? (
+            <>
+              <div className={`${styles.card} row`}>
+                <input
+                  defaultValue={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                />
+                <input
+                  onChange={(e) => setPassword(e.target.value)}
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                />
+                <a onClick={(e) => handleSignIn(e)} className="formAction">
+                  Sign In &rarr;
+                </a>
+              </div>
+            </>
+          ) : (
+            <>
+              <a
+                href="https://github.com/vercel/next.js/tree/canary/examples"
+                className={styles.card}
+              >
+                <h2>Very secret content &rarr;</h2>
+                <p>Can only see when logged in...</p>
+              </a>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Sign In &rarr;</h2>
-            <p>Something else here...</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Home &rarr;</h2>
-            <p>Something else here...</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Hi &rarr;</h2>
-            <p>Something else here...</p>
-          </a>
+              <a
+                href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+                className={styles.card}
+              >
+                <h2>Hi &rarr;</h2>
+                <p>Something else only users can see here...</p>
+              </a>
+            </>
+          )}
         </div>
       </main>
 
