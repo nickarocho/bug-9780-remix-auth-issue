@@ -15,6 +15,10 @@ a {
   box-sizing: border-box;
 }
 
+a {
+  cursor: pointer;
+}
+
 .row {
   max-width: 100% !important;
   flex-direction: row;

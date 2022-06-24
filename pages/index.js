@@ -106,7 +106,7 @@ export default function Home() {
       <main className={styles.main}>
         <h1 className={styles.title}>App title</h1>
 
-        <p className={styles.description}>
+        <div className={styles.description}>
           {user ? (
             <>
               <p>Welcome, {user.username}!</p>
@@ -115,7 +115,7 @@ export default function Home() {
           ) : (
             <p>Log in or sign up below.</p>
           )}
-        </p>
+        </div>
 
         <div className={styles.grid}>
           {!user && !tempUser ? (
