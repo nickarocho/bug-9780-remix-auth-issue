@@ -8,36 +8,14 @@ import { Auth, API, DataStore, withSSRContext } from "aws-amplify";
 
 import { Task } from "../src/models";
 
-// export const getServerSideProps = async (context) => {
-//   console.log({ context });
-//   // Ensure storage has access to cookies from client
-//   const { Auth } = withSSRContext({ context });
-
-//   let user = null;
-
-//   try {
-//     user = await Auth.currentAuthenticatedUser();
-//   } catch (error) {
-//     // "not authenticated"
-//     console.error(error);
-//   }
-
-//   console.log({ user });
-
-//   return {
-//     props: {
-//       user: JSON.parse(JSON.stringify(user)),
-//     },
-//   };
-// };
 export async function getServerSideProps({ req, res }) {
-  //   console.log({ req });
   const { Auth } = withSSRContext({ req });
-  // console.log({ req });
   let user;
+
   try {
     user = await Auth.currentAuthenticatedUser();
     console.log({ user });
+
     return {
       props: {
         authenticated: true,
@@ -46,6 +24,7 @@ export async function getServerSideProps({ req, res }) {
     };
   } catch (err) {
     console.log({ user, err });
+
     return {
       props: {
         authenticated: false,
@@ -150,27 +129,19 @@ export default function Home() {
     const form = new FormData(e.target);
     const todo = form.get("todo");
 
-    const user = await Auth.currentAuthenticatedUser();
-    console.log({ user });
+    try {
+      const user = await Auth.currentAuthenticatedUser();
 
-    // const task = await API.graphql({
-    //   query: createTask,
-    //   variables: {
-    //     input: {
-    //       name: todo,
-    //       done: false,
-    //     },
-    //   },
-    // });
-
-    const task = await DataStore.save(
-      new Task({
-        name: todo,
-        done: false,
-      })
-    );
-
-    console.log({ task });
+      const task = await DataStore.save(
+        new Task({
+          name: todo,
+          done: false,
+        })
+      );
+      console.log({ task });
+    } catch (err) {
+      console.error("handleSubmitTodo error: ", err);
+    }
   };
 
   return (
