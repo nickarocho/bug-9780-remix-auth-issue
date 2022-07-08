@@ -5,13 +5,20 @@
     "serviceName": "AppSync",
     "gqlSchemaPath": "/Users/nicaroch/code/scratch/bug-repro/next/bug-9780-remix-auth-issue/amplify/backend/api/bug9780remixauthissu/schema.graphql",
     "defaultAuthType": {
-      "mode": "API_KEY",
-      "expirationTime": 7
+      "mode": "AMAZON_COGNITO_USER_POOLS",
+      "cognitoUserPoolId": "authbug9780remixauthissuc6cb894f"
+    },
+    "conflictResolution": {
+      "defaultResolutionStrategy": {
+        "type": "AUTOMERGE"
+      }
     },
     "additionalAuthTypes": [
       {
-        "mode": "AMAZON_COGNITO_USER_POOLS",
-        "cognitoUserPoolId": "authbug9780remixauthissuc6cb894f"
+        "mode": "API_KEY",
+        "expirationTime": 365,
+        "apiKeyExpirationDate": "2023-06-30T21:43:51.381Z",
+        "keyDescription": "remix-sample"
       }
     ]
   }

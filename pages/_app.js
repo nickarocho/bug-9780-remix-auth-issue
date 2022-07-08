@@ -5,7 +5,7 @@ import config from "../src/aws-exports";
 
 Amplify.configure({
   ...config,
-  SSR: true,
+  ssr: true,
 });
 
 function MyApp({ Component, pageProps }) {
