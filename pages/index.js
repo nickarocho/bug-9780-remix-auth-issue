@@ -6,31 +6,6 @@ import { Auth, DataStore, withSSRContext } from "aws-amplify";
 
 import { Task } from "../src/models";
 
-export async function getServerSideProps({ req, res }) {
-  const { Auth } = withSSRContext({ req });
-  let user;
-
-  try {
-    user = await Auth.currentAuthenticatedUser();
-    console.log({ user });
-
-    return {
-      props: {
-        authenticated: true,
-        username: user.username,
-      },
-    };
-  } catch (err) {
-    console.log({ user, err });
-
-    return {
-      props: {
-        authenticated: false,
-      },
-    };
-  }
-}
-
 export default function Home() {
   const [user, setUser] = useState(null);
   const [tempUser, setTempUser] = useState(null);
