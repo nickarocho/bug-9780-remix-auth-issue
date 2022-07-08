@@ -2,7 +2,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 
 import { useEffect, useState } from "react";
-import { Auth, DataStore, withSSRContext } from "aws-amplify";
+import { Auth, DataStore } from "aws-amplify";
 
 import { Task } from "../src/models";
 
