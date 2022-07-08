@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Auth, DataStore } from "aws-amplify";
 
 import { Task } from "../src/models";
+import Link from "next/link";
 
 export default function Home() {
   const [user, setUser] = useState(null);
@@ -204,13 +205,12 @@ export default function Home() {
             </>
           ) : (
             <>
-              <a
-                href="https://github.com/vercel/next.js/tree/canary/examples"
-                className={styles.card}
-              >
-                <h2>Very secret content &rarr;</h2>
-                <p>Can only see when logged in...</p>
-              </a>
+              <Link href="/privatePage">
+                <a href="/privatePage" className={styles.card}>
+                  <h2>Very secret content &rarr;</h2>
+                  <p>Can only see when logged in...</p>
+                </a>
+              </Link>
 
               <a
                 href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
